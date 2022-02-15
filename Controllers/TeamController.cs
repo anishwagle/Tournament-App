@@ -60,7 +60,7 @@ namespace PubgTournament.Controllers
             return Ok(CreateSuccessResponse("Updated successfully"));
         }
         // [Authorize]
-       
+       [HttpGet]
         [Route("get-all")]
         public IActionResult GetAsync()
         {
@@ -70,20 +70,12 @@ namespace PubgTournament.Controllers
         // [Authorize]
         [HttpGet]
         [Route("get-by-id/{id}")]
-        public async Task<IActionResult> GetAsync( [FromRoute] string Id)
+        public async Task<IActionResult> GetByIdAsync( [FromRoute] string Id)
         {
             var response = await _store.FindByIdAsync(Id);
             return Ok(CreateSuccessResponse(response));
         }
-        // [Authorize]
- 
-        // [Route("get-by-user/{userId}")]
-        // public async Task<IActionResult> GetByUserAsync( [FromRoute] string userId)
-        // {
-        //     var response = await _store.GetByUserAsync( userId);
-        //     return Ok(CreateSuccessResponse(response));
-        // }
-        // [Authorize]
+    
         [HttpGet]
         [Route("delete/{id}")]
         public IActionResult Delete([FromRoute] string Id)

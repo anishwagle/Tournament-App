@@ -50,13 +50,7 @@ namespace PubgTournament
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddScoped(typeof(IStore<>), typeof(Store<>));
-            // services.AddTransient<IStore<Team>, Store<Team>>();
-            // services.AddTransient<IStore<Group>, Store<Group>>();
-            // services.AddTransient<IStore<Match>, Store<Match>>();
-            // services.AddTransient<IStore<Tournament>, Store<Tournament>>();
             services.AddTransient<IAppSettings, AppSettings>();
-            // services.AddSingleton<IAppSettings>(serviceProvider =>
-            //     serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value);
 
             services.AddSwaggerGen(c =>
             {
