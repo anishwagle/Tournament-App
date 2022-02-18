@@ -24,8 +24,9 @@ namespace PubgTournament.Controllers
         [Route("add")]
         public async Task<IActionResult> AddAsync(Match model)
         {
+            model.Id =  Guid.NewGuid().ToString();
             await _store.InsertOneAsync(model);
-            return Ok(CreateSuccessResponse("Created successfully"));
+            return Ok(CreateSuccessResponse(model));
         }
 
         [HttpPost]
@@ -37,12 +38,13 @@ namespace PubgTournament.Controllers
         }
         // [Authorize]
        
-        // [Route("get-all")]
-        // public async Task<IActionResult> GetAsync()
-        // {
-        //     var response = await _store.AsQueryable();
-        //     return Ok(CreateSuccessResponse(response));
-        // }
+        [HttpGet]
+        [Route("get-all")]
+        public async Task<IActionResult> GetAsync()
+        {
+            var response = _store.FilterBy(x=>true);
+            return Ok(CreateSuccessResponse(response));
+        }
         // [Authorize]
         [HttpGet]
         [Route("get-by-id/{id}")]

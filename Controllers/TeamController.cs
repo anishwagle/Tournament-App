@@ -28,22 +28,27 @@ namespace PubgTournament.Controllers
         // [Authorize]
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddAsync(Team model)
+        public async Task<IActionResult> AddAsync([FromBody]Team model)
         {
             try{
-            if (Request.Form.Files.Count > 0)
-            {
-                var file = Request.Form.Files[0];
-                using (var ms = new MemoryStream())
-                {
-                    file.CopyTo(ms);
-                    var fileBytes = ms.ToArray();
-                    string s = Convert.ToBase64String(fileBytes);
-                    model.TeamLogo = fileBytes;
-                }
+            // if (Request?.Form?.Files?.Count > 0)
+            // {
+            //     var file = Request.Form.Files[0];
+            //     using (var ms = new MemoryStream())
+            //     {
+            //         file.CopyTo(ms);
+            //         var fileBytes = ms.ToArray();
+            //         string s = Convert.ToBase64String(fileBytes);
+            //         model.TeamLogo = fileBytes;
+            //     }
 
+            // }
+            foreach (var item in model.Players){
+                item.Id =  Guid.NewGuid().ToString();
+                await _playerStore.InsertOneAsync(item);
             }
-            await _playerStore.InsertManyAsync(model.Players);
+            // await _playerStore.InsertManyAsync(model.Players);
+            model.Id =  Guid.NewGuid().ToString();
             await _store.InsertOneAsync(model);
             
             return Ok(CreateSuccessResponse("Created successfully"));

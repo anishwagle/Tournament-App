@@ -10,9 +10,9 @@ namespace PubgTournament.Models
         //     IsAlive=false;
         //     IsSub=false;
         // }
-        public string Name { get; set; }
+        public string PlayerName { get; set; }
         public int Kills { get; set; }
         public bool IsAlive { get; set; }
-        public bool IsSub { get; set; }
+        public bool IsPlaying { get; set; }
 }
 }

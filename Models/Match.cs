@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 namespace PubgTournament.Models
 {
-    public class Group :Document{
+    public class Match :Document{
         public string Name { get; set; }
-        public List<Team> Teams { get; set; }
+        public List<Group> Groups { get; set; }
     }
     
 }
