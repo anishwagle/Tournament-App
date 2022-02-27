@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
  using System;
  using  Newtonsoft.Json;
+ using System.Collections.Generic;
 
 
 namespace PubgTournament.Controllers
@@ -24,25 +25,37 @@ namespace PubgTournament.Controllers
         [Route("save")]
         public async Task<IActionResult> AddAsync(SystemSetting model)
         {
-            if(string.IsNullOrEmpty(model.Id)){
-                model.Id =  Guid.NewGuid().ToString();
-            await _store.InsertOneAsync(model);
-            return Ok(CreateSuccessResponse("Created successfully"));
-            }else{
-                await _store.ReplaceOneAsync(model);
-            return Ok(CreateSuccessResponse("Updated successfully"));
+            var result = await _store.FindOneAsync(x=>true);
+            if (result!=null)
+            {
+                var item = result;
+                item.AliveCounterBgImage = model.AliveCounterBgImage;
+                item.DominationBgImage = model.DominationBgImage;
+                item.EliminatedBgImage = model.EliminatedBgImage;
+                item.PrimaryColor = model.PrimaryColor;
+                item.SecondaryColor = model.SecondaryColor;
+                item.AliveColor = model.AliveColor;
+                item.DeadColor = model.DeadColor;
+
+                await _store.ReplaceOneAsync(item);
             }
+            else
+            {
+                await _store.InsertOneAsync(model);
+            }
+            
+            return Ok(CreateSuccessResponse("Updated successfully"));
             
         }
 
      
         // [Authorize]
        [HttpGet]
-        [Route("get-all")]
+        [Route("get")]
         public async Task<IActionResult> GetAsync()
         {
-            var response = _store.FilterBy(x=>true);
-            return Ok(CreateSuccessResponse(response));
+            var result = await _store.FindOneAsync(x=>true);
+            return Ok(CreateSuccessResponse(result));
         }
         // [Authorize]
         [HttpGet]
